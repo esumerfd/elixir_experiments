@@ -1,2 +1,7 @@
-# elixir_experiments
-Just finding the boundaries of some basic Elixir as I learn it.
+# Programing elixir 1.3
+
+Progress:
+Finished on "Functions Are the Core"
+
+Start again "Chapter 6 - Modules and Named Functions"
+
