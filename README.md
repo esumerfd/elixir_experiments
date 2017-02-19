@@ -1,7 +1,5 @@
 # Programing elixir 1.3
 
-Progress:
-Finished on "Functions Are the Core"
+Current status: "Chapter 6 - Modules and Named Functions" - Guard Clauses
 
-Start again "Chapter 6 - Modules and Named Functions"
 
