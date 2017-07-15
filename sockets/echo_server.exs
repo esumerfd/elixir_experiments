@@ -1,11 +1,14 @@
-defmodule EchoServer do
+defmodule Echo.Main do
   def run do
-    control()
+    Echo.Control.control()
   end
+end
+
+defmodule Echo.Control do
 
   def control() do
     control_pid = self()
-    spawn_monitor(EchoServer, :listening, [control_pid])
+    spawn_monitor(Echo.Listen, :start, [control_pid])
     monitor()
   end
 
@@ -13,6 +16,12 @@ defmodule EchoServer do
     receive do
       _ -> IO.puts "Exiting..."
     end
+  end
+end
+
+defmodule Echo.Listen do
+  def start(control_pid) do
+    listening(control_pid)
   end
 
   def listening(control_pid) do
@@ -35,28 +44,36 @@ defmodule EchoServer do
   end
 
   def accepted(control_pid, {:ok, client}) do
-    spawn_monitor(EchoServer, :connection, [control_pid, client])
+    spawn_monitor(Echo.Connection, :start, [control_pid, client])
   end
 
   def accepted(_, {:error, something}) do
     IO.puts "ACCEPT ERROR #{something}"
   end
+end
 
-  def connection(control_pid, client) do
-    :gen_tcp.send(client, "Welcome (quit to exit)\n")
-    received_data(control_pid, client)
+defmodule Echo.Connection do
+  def start(control_pid, client) do
+    welcome(control_pid, client)
   end
 
-  def received_data(control_pid, client) do
+  def welcome(control_pid, client) do
+    :gen_tcp.send(client, "Welcome (quit to exit)\n")
+    received_loop(control_pid, client)
+  end
+
+  def received_loop(control_pid, client) do
     received_data(control_pid, client, :gen_tcp.recv(client, 0))
   end
 
   def received_data(_, client, {:ok, "quit\r\n"}) do
+    :gen_tcp.send(client, "Goodbye\n")
     :gen_tcp.close(client)
     IO.puts "QUIT #{inspect client}"
   end
 
   def received_data(control_pid, client, {:ok, "shutdown\r\n"}) do
+    :gen_tcp.send(client, "Shutting Down\n")
     :gen_tcp.close(client)
     IO.puts "Shutting Down #{inspect client}"
     send control_pid, "shutdown"
@@ -65,7 +82,7 @@ defmodule EchoServer do
   def received_data(control_pid, client, {:ok, data}) do
     IO.puts "DATA #{inspect data}"
     :gen_tcp.send(client, data)
-    received_data(control_pid, client)
+    received_loop(control_pid, client)
   end
 
   def received_data(_, client, {:error, :closed}) do
@@ -78,5 +95,5 @@ defmodule EchoServer do
   end
 end
 
-EchoServer.run
+Echo.Main.run
 
