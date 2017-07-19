@@ -18,6 +18,5 @@ defmodule JsonValue do
   def value_list(data) do
     elem(data, 1)["c"]
   end
-
-
 end
+
