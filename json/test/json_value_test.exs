@@ -22,5 +22,9 @@ defmodule JsonValueTest do
 
     assert ["d","e"] == JsonValue.parse(@json_data) |> JsonValue.value_list
   end
+
+  test "json missing values" do
+    assert "" == JsonValue.parse("{}") |> JsonValue.value_a
+  end
 end
 
