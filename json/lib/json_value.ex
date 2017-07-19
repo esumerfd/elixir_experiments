@@ -3,20 +3,20 @@ defmodule JsonValue do
     JSON.decode(json_data)
   end
 
-  def value_a(data) do
-    elem(data, 1)["a"]
+  def value_a({:ok, %{"a" => value}}) do
+    value
   end
 
-  def value_b(data) do
-    elem(data, 1)["b"]
+  def value_b({:ok, %{"b" => value}}) do
+    value
   end
 
-  def value_g(data) do
-    elem(data, 1)["f"]["g"]
+  def value_g({:ok, %{"f" => %{"g" => value}}}) do
+    value
   end
 
-  def value_list(data) do
-    elem(data, 1)["c"]
+  def value_list({:ok, %{"c" => value}}) do
+    value
   end
 end
 
