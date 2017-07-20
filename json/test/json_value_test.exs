@@ -16,15 +16,20 @@ defmodule JsonValueTest do
   )
 
   test "json values" do
-    assert "1" == JsonValue.parse(@json_data) |> JsonValue.value_a
-    assert "2" == JsonValue.parse(@json_data) |> JsonValue.value_b
-    assert "3" == JsonValue.parse(@json_data) |> JsonValue.value_g
+    json_value = JsonValue.parse(@json_data)
+    assert "1" == json_value.field_a
+    assert "2" == json_value.field_b
+    assert "3" == json_value.field_g
 
-    assert ["d","e"] == JsonValue.parse(@json_data) |> JsonValue.value_list
+    assert ["d","e"] == json_value.field_list
   end
 
-  test "json missing values" do
-    assert "" == JsonValue.parse("{}") |> JsonValue.value_a
+  test "missing values" do
+    assert "MISSING b" == JsonValue.parse(~s({"a": "1"})).field_b
+  end
+
+  test "some bad json" do
+    assert "BAD DATA: unexpected_end_of_buffer" == JsonValue.parse("")
   end
 end
 
