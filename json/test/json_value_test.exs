@@ -25,7 +25,13 @@ defmodule JsonValueTest do
   end
 
   test "missing values" do
-    assert "MISSING b" == JsonValue.parse(~s({"a": "1"})).field_b
+    assert "MISSING a" == JsonValue.parse(~s({"x": "1"})).field_a
+    assert "MISSING b" == JsonValue.parse(~s({"x": "1"})).field_b
+
+    assert "MISSING f" == JsonValue.parse(~s({"x": "1"})).field_g
+    assert "MISSING g" == JsonValue.parse(~s({"f": {"x": "1"}})).field_g
+
+    assert "MISSING c" == JsonValue.parse(~s({"x": "1"})).field_list
   end
 
   test "some bad json" do
