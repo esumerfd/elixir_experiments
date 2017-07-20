@@ -2,7 +2,9 @@ defmodule JsonValue do
   defstruct field_a: "", field_b: "", field_c: "", field_g: "", field_list: []
 
   def parse(json_text) do
-    populate_struct(JSON.decode(json_text))
+    json_text
+    |> JSON.decode
+    |> populate_struct
   end
 
   defp populate_struct({:ok, json_data}) do
