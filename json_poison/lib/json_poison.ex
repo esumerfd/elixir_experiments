@@ -3,7 +3,6 @@ defmodule JsonFieldG do
 end
 
 defmodule JsonFields do
-  @derive [Poison.Encoder]
   defstruct field_a: "", field_b: "", field_c: "", field_f: %JsonFieldG{}
 end
 
