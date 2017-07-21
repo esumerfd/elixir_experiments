@@ -28,4 +28,9 @@ defmodule JsonPoisonTest do
   test "some bad json" do
     assert "BAD DATA: invalid" == JsonPoison.parse("")
   end
+
+  test "encoding json" do
+    assert ~s({"field_f":{"field_g":"yes"},"field_c":[1,2],"field_b":"2","field_a":"1"}) ==
+      JsonPoison.format(%{field_a: "1", field_b: "2", field_c: [1,2], field_f: %{field_g: "yes"}})
+  end
 end

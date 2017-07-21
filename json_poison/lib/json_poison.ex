@@ -3,6 +3,7 @@ defmodule JsonFieldG do
 end
 
 defmodule JsonFields do
+  @derive [Poison.Encoder]
   defstruct field_a: "", field_b: "", field_c: "", field_f: %JsonFieldG{}
 end
 
@@ -10,6 +11,12 @@ defmodule JsonPoison do
   def parse(json_text) do
     json_text
     |> Poison.decode(as: %JsonFields{})
+    |> check
+  end
+
+  def format(json_data) do
+    json_data
+    |> Poison.encode
     |> check
   end
 
